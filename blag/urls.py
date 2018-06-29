@@ -21,19 +21,19 @@ from app.controller import user
 from app.api import user as apiUser
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
 
     # 首页
-    path('', index.index),
-    path('/', index.index),
-    path('index/', index.index),
+    path('', index.index, name='index'),
+    path('/', index.index, name='index'),
+    path('index/', index.index, name='index'),
 
     # 登录
-    path('login/',user.login),
+    path('login/', user.login, name='login'),
     # 注册
-    path('register/',user.register),
+    path('register/', user.register, name='register'),
 
     # 接口
-    path('api/loginHandle/',apiUser.loginHandle,name='loginHandle'),
-    path('api/registerHandle/',apiUser.registerHandle,name='registerHandle'),
+    path('api/loginHandle/', apiUser.loginHandle, name='loginHandle'),
+    path('api/registerHandle/', apiUser.registerHandle, name='registerHandle'),
 ]

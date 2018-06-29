@@ -1,12 +1,37 @@
 {% extends "./base.html" %}
  
 {% block body %}
-<form action="/registerHandle/" method="post">
 	{% csrf_token %}
-    用户名：<input type="text" name="account"><br/>
-    昵称：<input type="text" name="nickname"><br/>
-    密码：<input type="password" name="password"></br>
-    确认密码：<input type="password" name="password">
-    <input type="submit" value="注册" />
-</form>
+    用户名：<input type="text" id="account"><br/>
+    昵称：<input type="text" id="nickname"><br/>
+    密码：<input type="password" id="password"></br>
+    确认密码：<input type="password" id="password_c">
+    <button id="btn" >注册</button>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		$(function (){
+			$('#btn').click((e)=>{
+				$.ajax({
+					url: '{% url "registerHandle" %}',
+					headers:{"X-CSRFToken":"{{ csrf_token }}"},
+					type:"post",
+					data:{
+						account:$('#account').val(),
+						nickname:$('#nickname').val(),
+						password:$('#password').val(),
+						password_c:$('#password_c').val()
+					},
+					dataType:'json',
+					success:function (data) {
+	                    var meta = data.meta
+	                    if(meta.code!=0)
+	                    	alert(meta.msg)
+	                    else
+	                    	alert('注册成功！')
+	            	}
+				})
+			})
+		})
+	</script>
 {% endblock %}
