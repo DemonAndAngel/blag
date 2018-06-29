@@ -1,0 +1,29 @@
+{% extends "./base.html" %}
+ 
+{% block body %}
+    用户名：<input type="account" id="account"><br/>
+    密码：<input type="password" id="password">
+    <button id="btn">登录</button>
+{% endblock %}
+{% block script %}
+	<script type="text/javascript">
+		$(function (){
+			$('#btn').click((e)=>{
+				$.ajax({
+					url: '{% url "loginHandle" %}',
+					headers:{"X-CSRFToken":"{{ csrf_token }}"},
+					type:"post",
+					data:{account:$('#account').val(),password:$('#password').val()},
+					dataType:'json',
+					success:function (data) {
+	                    var meta = data.meta
+	                    if(meta.code!=0)
+	                    	alert(meta.msg)
+	                    else
+	                    	alert('登录成功！')
+	            	}
+				})
+			})
+		})
+	</script>
+{% endblock %}
