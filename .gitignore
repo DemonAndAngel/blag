@@ -2,3 +2,4 @@
 __pycache__/
 blag/settings.py
 venv/
+wsgi.ini
