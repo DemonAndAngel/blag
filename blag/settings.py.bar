@@ -25,7 +25,9 @@ SECRET_KEY = 'csc83_aj*sb=7s0i_^x4y(1j8%9y)3xj@@a8#8786o@-ec)^1q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*',
+]
 
 # Application definition
 
