@@ -3,3 +3,5 @@ __pycache__/
 blag/settings.py
 venv/
 wsgi.ini
+static/app
+index.html
