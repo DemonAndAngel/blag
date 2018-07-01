@@ -19,8 +19,8 @@ def loginHandle(request):
     password = postData.get('password', None)
     if account == None or password == None:
         return HttpResponse(common.makeResponseJson({}, 408, '参数错误！'))
-    if (request.session.get('app_user_account', None) != None):
-        return HttpResponse(common.makeResponseJson({}, 403, '用户已登录！'))
+    # if (request.session.get('app_user_account', None) != None):
+    #     return HttpResponse(common.makeResponseJson({}, 403, '用户已登录！'))
     try:
         user = User.objects.get(account=account)
     except User.DoesNotExist:
@@ -35,21 +35,22 @@ def loginHandle(request):
 
 @require_http_methods(["POST"])
 def registerHandle(request):
-    account = request.POST['account']
-    nickname = request.POST['nickname']
-    password = request.POST['password']
-    if re.search(r'^[a-zA-Z0-9_-]{5,20}$', account) == None:
+    postData = common.requestBodyData(request)
+    account = postData.get('account',None)
+    nickname = postData.get('nickname',None)
+    password = postData.get('password',None)
+    if re.search(r'^[a-zA-Z0-9_-]{6,20}$', account) == None:
         return HttpResponse(common.makeResponseJson({}, 407, '账号格式有误！'))
-    if re.search(r'^[a-zA-Z0-9_-]{5,20}$', password) == None:
+    if re.search(r'^[a-zA-Z0-9_-]{6,20}$', password) == None:
         return HttpResponse(common.makeResponseJson({}, 407, '密码格式有误！'))
     try:
         user = User.objects.get(account=account)
     except User.DoesNotExist:
-        user = User.objects.get(account=account)
         # 添加用户
         salt = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
         my_password = make_password(password + salt)
         user = User(account=account, nickname=nickname != None and nickname or account, password=my_password, salt=salt)
         user.save()
+        # 这里需要写入角色权限
         return HttpResponse(common.makeResponseJson())
     return HttpResponse(common.makeResponseJson({}, 407, '账号已存在！'))
