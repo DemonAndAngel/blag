@@ -9,8 +9,8 @@ class Auth(MiddlewareMixin):
             'blog/index',
             'blog/register',
             'blog/login',
-            'api/loginHandle',
-            'api/registerHandle'
+            'api/login/handle',
+            'api/register/handle'
         ]
         for name in not_login:
             if name in request.path:
