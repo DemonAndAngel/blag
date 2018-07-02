@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class User(models.Model):
     account = models.CharField('账号', max_length=20, unique=True)
     nickname = models.CharField('昵称', max_length=100)
@@ -27,3 +28,11 @@ class Permission(models.Model):
     created_at = models.DateTimeField('创建时间', auto_now_add=True)
     updated_at = models.DateTimeField('最后修改日期', auto_now=True)
     roles = models.ManyToManyField(Role)
+
+class Blog(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)  # 级联删除
+    title = models.CharField('标题',max_length=100)
+    content = models.TextField('内容')
+    created_at = models.DateTimeField('创建时间', auto_now_add=True)
+    updated_at = models.DateTimeField('最后修改日期', auto_now=True)
+

@@ -28,17 +28,29 @@ def loginHandle(request):
     password = password + user.salt
     if check_password(password, user.password):
         request.session['app_user_account'] = account
-        return HttpResponse(common.makeResponseJson({}))
+        data = {
+            'user': {
+                'account': user.account,
+                'nickname': user.nickname,
+            }
+        }
+        return HttpResponse(common.makeResponseJson(data))
     else:
         return HttpResponse(common.makeResponseJson({}, 407, '账号密码错误！'))
 
 
 @require_http_methods(["POST"])
+def logoutHandle(request):
+    request.session['app_user_account'] = None
+    return HttpResponse(common.makeResponseJson())
+
+
+@require_http_methods(["POST"])
 def registerHandle(request):
     postData = common.requestBodyData(request)
-    account = postData.get('account',None)
-    nickname = postData.get('nickname',None)
-    password = postData.get('password',None)
+    account = postData.get('account', None)
+    nickname = postData.get('nickname', None)
+    password = postData.get('password', None)
     if re.search(r'^[a-zA-Z0-9_-]{6,20}$', account) == None:
         return HttpResponse(common.makeResponseJson({}, 407, '账号格式有误！'))
     if re.search(r'^[a-zA-Z0-9_-]{6,20}$', password) == None:

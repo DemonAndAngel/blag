@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path, re_path
 # from django.conf.urls import url
 from app.controller import index
-from app.controller import user
 from app.api import user as apiUser
+from app.api import blog as apiBlog
 
 urlpatterns = [
     re_path('admin/', admin.site.urls, name='admin'),
@@ -28,6 +28,13 @@ urlpatterns = [
     # 博客前端路由
     re_path('blog/', index.index, name='index'),
     # 接口
-    path('api/loginHandle/', apiUser.loginHandle, name='loginHandle'),
-    path('api/registerHandle/', apiUser.registerHandle, name='registerHandle'),
+    path('api/login/handle/', apiUser.loginHandle, name='loginHandle'),
+    path('api/logout/handle/', apiUser.logoutHandle, name='logoutHandle'),
+    path('api/register/handle/', apiUser.registerHandle, name='registerHandle'),
+
+    path('api/get/blog/handle', apiBlog.getHandle, name='getBlogHandle'),
+    path('api/get/blog/list/handle', apiBlog.getListHandle, name='getBlogListHandle'),
+    path('api/add/blog/handle', apiBlog.addHandle, name='addBlogHandle'),
+    path('api/edit/blog/handle', apiBlog.editHandle, name='editBlogHandle'),
+    path('api/del/blog/handle', apiBlog.deleteHandle, name='delBlogHandle'),
 ]

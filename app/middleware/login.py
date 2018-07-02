@@ -5,18 +5,14 @@ from django.utils.deprecation import MiddlewareMixin
 class Auth(MiddlewareMixin):
     def process_request(self, request):
         not_login = [
-            '/admin/',
-            '/admin/login/',
-            '/favicon.ico',
-            '',
-            '/',
-            '/index/',
-            '/login/',
-            '/loginHandle/',
-            '/register/',
-            '/registerHandle/',
+            'admin',
+            'blog/index',
+            'blog/register',
+            'blog/login',
+            'api/loginHandle',
+            'api/registerHandle'
         ]
         for name in not_login:
-            if name == request.path:
+            if name in request.path:
                 return None
         return HttpResponseForbidden('没有权限')
