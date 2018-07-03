@@ -8,6 +8,7 @@ import re
 import logging
 
 from util import common
+from util import file as FileUtil
 
 from app.models import User
 
@@ -17,7 +18,7 @@ def loginHandle(request):
     postData = common.requestBodyData(request)
     account = postData.get('account', None)
     password = postData.get('password', None)
-    if account == None or password == None:
+    if account is None or password is None:
         return HttpResponse(common.makeResponseJson({}, 408, '参数错误！'))
     # if (request.session.get('app_user_account', None) != None):
     #     return HttpResponse(common.makeResponseJson({}, 403, '用户已登录！'))
@@ -28,10 +29,15 @@ def loginHandle(request):
     password = password + user.salt
     if check_password(password, user.password):
         request.session['app_user_account'] = account
+        avatar_url = ''
+        if user.avatar_file:
+            avatar = user.avatar_file
+            avatar_url = FileUtil.getFileUrl(avatar, request)
         data = {
             'user': {
                 'account': user.account,
                 'nickname': user.nickname,
+                'avatar_url': avatar_url
             }
         }
         return HttpResponse(common.makeResponseJson(data))
@@ -51,9 +57,9 @@ def registerHandle(request):
     account = postData.get('account', None)
     nickname = postData.get('nickname', None)
     password = postData.get('password', None)
-    if re.search(r'^[a-zA-Z0-9_-]{6,20}$', account) == None:
+    if re.search(r'^[a-zA-Z0-9_-]{6,20}$', account) is None:
         return HttpResponse(common.makeResponseJson({}, 407, '账号格式有误！'))
-    if re.search(r'^[a-zA-Z0-9_-]{6,20}$', password) == None:
+    if re.search(r'^[a-zA-Z0-9_-]{6,20}$', password) is None:
         return HttpResponse(common.makeResponseJson({}, 407, '密码格式有误！'))
     try:
         user = User.objects.get(account=account)

@@ -5,3 +5,4 @@ venv/
 wsgi.ini
 static/app
 index.html
+static/blog/upload

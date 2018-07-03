@@ -19,22 +19,28 @@ from django.urls import path, re_path
 from app.controller import index
 from app.api import user as apiUser
 from app.api import blog as apiBlog
+from app.api import file as apiFile
 
 urlpatterns = [
-    re_path('admin/', admin.site.urls, name='admin'),
+    path('admin/', admin.site.urls, name='admin'),
     # 首页
-    path('', index.index, name='index'),
-    path('/', index.index, name='index'),
+    path('', index.index),
+    path('/', index.index),
     # 博客前端路由
-    re_path('blog/', index.index, name='index'),
+    path('blog/', index.index),
     # 接口
+    # 用户登录接口
     path('api/login/handle/', apiUser.loginHandle, name='loginHandle'),
     path('api/logout/handle/', apiUser.logoutHandle, name='logoutHandle'),
     path('api/register/handle/', apiUser.registerHandle, name='registerHandle'),
 
-    path('api/get/blog/handle', apiBlog.getHandle, name='getBlogHandle'),
-    path('api/get/blog/list/handle', apiBlog.getListHandle, name='getBlogListHandle'),
-    path('api/add/blog/handle', apiBlog.addHandle, name='addBlogHandle'),
-    path('api/edit/blog/handle', apiBlog.editHandle, name='editBlogHandle'),
-    path('api/del/blog/handle', apiBlog.deleteHandle, name='delBlogHandle'),
+    # 博客帖子接口
+    path('api/get/blog/handle/', apiBlog.getHandle, name='getBlogHandle'),
+    path('api/get/blog/list/handle/', apiBlog.getListHandle, name='getBlogListHandle'),
+    path('api/add/blog/handle/', apiBlog.addHandle, name='addBlogHandle'),
+    path('api/edit/blog/handle/', apiBlog.editHandle, name='editBlogHandle'),
+    path('api/del/blog/handle/', apiBlog.deleteHandle, name='delBlogHandle'),
+
+    # 上传文件接口
+    path('api/upload/file/handle/', apiFile.uploadFileHandle, name='uploadFileHandle')
 ]
