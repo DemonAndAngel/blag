@@ -18,6 +18,8 @@ class Auth(MiddlewareMixin):
         for name in not_login:
             if name in request.path:
                 return None
-        if request.session.get('app_user_account',None) is None:
+        if request.path == '' or request.path == '/':
+            return None
+        if request.session.get('app_user_account', None) is None:
             return HttpResponseForbidden('没有权限')
         return None
