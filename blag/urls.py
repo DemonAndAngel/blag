@@ -27,7 +27,7 @@ urlpatterns = [
     path('', index.index),
     path('/', index.index),
     # 博客前端路由
-    re_path('blog/', index.index),
+    re_path(r'blog/.*?', index.index),
     # 接口
     # 用户登录接口
     path('api/login/handle/', apiUser.loginHandle, name='loginHandle'),
